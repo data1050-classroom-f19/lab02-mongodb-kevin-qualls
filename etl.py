@@ -6,7 +6,6 @@ from pymongo import MongoClient, TEXT, GEOSPHERE
 from datetime import datetime
 import pandas as pds
 
-
 def load_airbnb(file):
     """ Extracts the airbnb csv file into memory, Transforms certain fields, and Loads result into MongoDb.
         Creates TEXT index on 'name' and 'neighbourhood'.
@@ -50,6 +49,8 @@ def load_taxi(file):
         d['pickup_datetime'] = datetime.strptime(d['pickup_datetime'], '%Y-%m-%d %H:%M:%S %Z')
         arr.append(d.copy())
 
+    inserted_ids = db.taxi.insert_many(arr).inserted_ids
+    print(len(inserted_ids), "Taxi documents inserted")
     # TODO: insert `arr` into `db.taxi` and print the number of records inserted.
     # Use load_airbnb as an example. This takes 2 lines of codes.
 
